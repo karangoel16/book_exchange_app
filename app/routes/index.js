@@ -1,6 +1,7 @@
 'use strict';
 
 var path = process.cwd();
+var User = require("../models/users");
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
 
 module.exports = function (app, passport) {
@@ -30,10 +31,9 @@ module.exports = function (app, passport) {
 			req.logout();
 			res.redirect('/login');
 		});
-
-	app.route('/profile')
+		app.route('/profile')
 		.get(isLoggedIn, function (req, res) {
-			res.sendFile(path + '/public/profile.html');
+			res.render('profile',{login:true,user:JSON.stringify(req.user)});
 		});
 
 	app.route('/api/:id')
@@ -58,7 +58,17 @@ module.exports = function (app, passport) {
 			successRedirect:'/',
 			failureRedirect:'/login'
 		}));
-	
+	app.route('/updateUser')
+		.post(isLoggedIn,function(req,res){
+			User.update({_id:req.user._id},{city:req.body.city,state:req.body.state},function(err,user){
+				if(err)
+				{
+					console.log(err);
+					return ;
+				}
+				res.json({success : "Updated Successfully", status : 200});
+			})
+		});
 	app.route('/api/:id/clicks')
 		.get(isLoggedIn, clickHandler.getClicks)
 		.post(isLoggedIn, clickHandler.addClick)
