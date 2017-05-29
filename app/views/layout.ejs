@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Voting-App</title>
+		
+		<link href="/public/css/main.css" rel="stylesheet" type="text/css">
+				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/masonry/2.1.08/jquery.masonry.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+  <script src="/public/js/main.js"></script>
+	</head>
+	
+	<header>
+		<p>Welcome, <span id="display-name"></span>!</p>
+		<a class="menu" href="/">Home</a>
+		<a class="menu" href="/profile">Profile</a>
+		<%if(new String(login).valueOf() == new String("true").valueOf()){%>
+		<a class="menu" href="/logout">Logout</a>
+		<%}else{%>
+			<a class="menu" href="/login">Login</a>
+		<%}%>
+		<a class="menu" href="/myPost">My Pics</a>		
+	</header>
