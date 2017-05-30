@@ -1,6 +1,10 @@
 <% include layout%>
 <body>
 	<div class="container">
+		<div class="item" style="padding-left:20px;padding-top:30px;">
+			<button onclick="location.href='/addbook'" class=
+			"btn btn-primary" style="padding-left:10px;">ADD BOOK</button>
+		</div>
 		<% books.forEach(function(book){%>
 			<div class="item w2">
 				<img src="<%=book.thumbnail%>" height='150px' width=100px>

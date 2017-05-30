@@ -1,0 +1,25 @@
+<%include layout%>
+	<body>
+		<div class="container">	
+			<div class="login">
+				<br />
+				<p class="clementine-text">Clementine.js</p>
+				<a href="/auth/github">
+					<div class="btn" id="login-btn">
+						<img src="/public/img/github_32px.png" alt="github logo" />
+						<p>LOGIN WITH GITHUB</p>
+					</div>
+				</a><br>
+				<a href="/auth/twitter">Login with twitter</a>
+			</div>
+			<div class="jumbotron">
+			<p class="clementine-text">Login with Username</p>
+			<form>
+				<input type="text" class="form-control" placeholder="Username" required><br>
+				<input type="password" class="form-control" placeholder="password" required ><br>
+				<input type="submit" class="btn btn-primary">
+			</form>
+			<button class="btn btn-primary onclick="location.href='/signup'">Sign Up</button>
+		</div>
+		</div>
+	</body>

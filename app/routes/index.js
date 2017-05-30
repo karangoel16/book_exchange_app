@@ -26,9 +26,14 @@ module.exports = function (app, passport) {
 			});	
 		});
 
+	app.route('/signup')
+		.get(function(req,res){
+			res.render('signup',{login:false});
+		});
+
 	app.route('/login')
 		.get(function (req, res) {
-			res.sendFile(path + '/public/login.html');
+			res.render('login',{login:false});
 		});
 
 	app.route('/logout')
@@ -40,6 +45,7 @@ module.exports = function (app, passport) {
 		.get(isLoggedIn, function (req, res) {
 			res.render('profile',{login:true,user:JSON.stringify(req.user)});
 		});
+
 	app.route('/mybooks')
 		.get(isLoggedIn,function(req,res){
 			User.findOne({_id:req.user._id}).populate('books').exec(function(err,user){
@@ -48,9 +54,11 @@ module.exports = function (app, passport) {
 						console.log(err);
 						return ;
 					}
+					console.log(user);
 					res.render('mybooks',{login:true,books:user.books});
 				});
 		});
+
 	app.route('/addbook')
 		.get(isLoggedIn,function(req,res){
 			res.render('addbook',{login:true});
@@ -61,6 +69,7 @@ module.exports = function (app, passport) {
 				name:req.body.book,
 				thumbnail:req.body.Link,
 				ISBN:req.body.ISBN,
+				user:req.user._id
 			});
 			book.save(function(err)
 			{
@@ -73,6 +82,17 @@ module.exports = function (app, passport) {
 				res.redirect('/mybooks');
 			});
 		});
+
+	app.route('/decide')
+		.get(isLoggedIn,function(req,res){
+			res.render("booklend",{login:true});
+		});
+
+	app.route('/borrowbook')
+		.post(isLoggedIn,function(req,res){
+			res.send("hello");
+		});
+
 	app.route('/searchISBN')
 		.post(isLoggedIn,function(req,res){
 			Book.findOne({ISBN:req.body.ISBN},function(err,book){

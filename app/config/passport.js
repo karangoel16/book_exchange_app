@@ -2,6 +2,7 @@
 
 var GitHubStrategy = require('passport-github').Strategy;
 var TwitterStratergy= require('passport-twitter').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/users');
 var configAuth = require('./auth');
 
@@ -78,4 +79,28 @@ module.exports = function (passport) {
 			});
 		});
 	}));
+	passport.use(new LocalStrategy(function(username,password,done)
+    {
+        User.findOne({user:username},function(err,user)
+        {
+            if(err)
+            {
+                return done(err);
+            }
+            if(!user)
+            {
+                return done(null,false,{message:'Incorrect username'});
+            }
+            var check=user.validatePassword(password);
+            if(check===true)
+            {
+                //console.log(req.isAuthenticated);
+                return done(null,user);
+            }
+            else
+            {
+               return done(null,false,{message:'Incorrect Password'});
+            }
+        });
+    }));
 };

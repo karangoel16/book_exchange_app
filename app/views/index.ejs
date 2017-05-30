@@ -1,8 +1,23 @@
 <% include layout %>
+<script>
+var app = angular.module("myApp",[]);
+app.controller("myCtrl",function($scope,$http){
+	$scope.ajax=function(val)
+	{
+		$http.post('/borrowbook').then(function successCallback(){
+			$scope.update="Successfully updated";
+			console.log("Hello");
+		});
+	}
+});
+</script>
 <body>
-	<div class="container">
+	<div class="container" ng-app="myApp" ng-controller="myCtrl">
 		<% books.forEach(function(book){%>
 			<div class="item w2">
+				<%if(!books.status){%>
+					<span class="glyphicon glyphicon-retweet" style="position:relative;float:right;cursor:pointer;padding-right:10px;" ng-click="ajax('<%=book._id%>')"></span>
+				<%}%>
 				<img src="<%=book.thumbnail%>" height='150px' width=100px>
 			</div>
 		<%})%>

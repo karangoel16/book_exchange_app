@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var Books = require('./books');
+var crypto = require('crypto');
 var Schema = mongoose.Schema;
 
 var User = new Schema({
@@ -22,6 +23,8 @@ var User = new Schema({
    books:[{type: mongoose.Schema.Types.ObjectId, ref: 'Book'}],
    city:String,
    state:String,
+   hash:String,
+   salt:String
 });
 User.methods.addbook = function(book){
 	this.update({$push:{books:book}},function(err){
@@ -33,4 +36,13 @@ User.methods.addbook = function(book){
 		console.log("successfully added");
 	});
 }
+User.methods.setPassword = function(password){
+    this.salt = crypto.randomBytes(16).toString('hex');
+    this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64,'SHA1').toString('hex');
+}
+
+User.methods.validatePassword = function(password){
+    var hash=crypto.pbkdf2Sync(password, this.salt, 1000, 64,'SHA1').toString('hex');
+    return this.hash === hash;
+};
 module.exports = mongoose.model('User', User);
