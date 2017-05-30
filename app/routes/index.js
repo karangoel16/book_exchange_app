@@ -3,6 +3,7 @@
 var path = process.cwd();
 var User = require("../models/users");
 var Book = require("../models/books");
+var user_func = require("./user");
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
 
 module.exports = function (app, passport) {
@@ -19,7 +20,10 @@ module.exports = function (app, passport) {
 
 	app.route('/')
 		.get( function (req, res) {
-			res.render('index',{login:req.isAuthenticated()});
+			Book.find().limit(10).exec(function(err,books)
+			{
+				res.render('index',{login:req.isAuthenticated(),books:books});
+			});	
 		});
 
 	app.route('/login')
@@ -38,7 +42,14 @@ module.exports = function (app, passport) {
 		});
 	app.route('/mybooks')
 		.get(isLoggedIn,function(req,res){
-			res.render('mybooks',{login:true});
+			User.findOne({_id:req.user._id}).populate('books').exec(function(err,user){
+					if(err)
+					{
+						console.log(err);
+						return ;
+					}
+					res.render('mybooks',{login:true,books:user.books});
+				});
 		});
 	app.route('/addbook')
 		.get(isLoggedIn,function(req,res){
@@ -48,7 +59,7 @@ module.exports = function (app, passport) {
 			console.log(req.body);
 			var book=new Book({
 				name:req.body.book,
-				thumbnail:req.body.link,
+				thumbnail:req.body.Link,
 				ISBN:req.body.ISBN,
 			});
 			book.save(function(err)
@@ -58,6 +69,7 @@ module.exports = function (app, passport) {
 					console.log(err);
 					res.redirect('/error');
 				}
+				req.user.addbook(book._id);
 				res.redirect('/mybooks');
 			});
 		});

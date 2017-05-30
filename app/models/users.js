@@ -1,6 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose');
+var Books = require('./books');
 var Schema = mongoose.Schema;
 
 var User = new Schema({
@@ -18,9 +19,18 @@ var User = new Schema({
    nbrClicks: {
       clicks: Number
    },
-   books:[{type: mongoose.Schema.Types.ObjectId, ref: 'Books'}],
+   books:[{type: mongoose.Schema.Types.ObjectId, ref: 'Book'}],
    city:String,
    state:String,
 });
-
+User.methods.addbook = function(book){
+	this.update({$push:{books:book}},function(err){
+		if(err)
+		{
+			console.log(err);
+			return;
+		}
+		console.log("successfully added");
+	});
+}
 module.exports = mongoose.model('User', User);

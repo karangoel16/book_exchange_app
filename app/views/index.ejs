@@ -1,1 +1,10 @@
 <% include layout %>
+<body>
+	<div class="container">
+		<% books.forEach(function(book){%>
+			<div class="item w2">
+				<img src="<%=book.thumbnail%>" height='150px' width=100px>
+			</div>
+		<%})%>
+	</div>
+</body>

@@ -2,7 +2,6 @@
 
 var express = require('express');
 var routes = require('./app/routes/index.js');
-var user_routes=require('./app/routes/user.js');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var session = require('express-session');
@@ -43,7 +42,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 routes(app, passport);
-user_routes(app,passport);//this is to make code more readable
 
 var port = process.env.PORT || 8080;
 

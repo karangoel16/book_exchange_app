@@ -202,3 +202,19 @@ span {
 	display: inline;
 	margin: 0;
 }
+
+.item {
+  height:100px;
+  width:150px;
+  padding-top: 15px;
+  float: left;
+  margin: 5px;
+  background: #CCC;
+  border-radius: 5px;
+}
+.item:hover{
+	background: #FCC;
+}
+.item.w2{
+	height:250px;
+}
