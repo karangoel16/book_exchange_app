@@ -17,7 +17,7 @@ module.exports = function (app, passport) {
 	var clickHandler = new ClickHandler();
 
 	app.route('/')
-		.get(isLoggedIn, function (req, res) {
+		.get( function (req, res) {
 			res.render('index',{login:req.isAuthenticated()});
 		});
 
@@ -60,7 +60,7 @@ module.exports = function (app, passport) {
 		}));
 	app.route('/updateUser')
 		.post(isLoggedIn,function(req,res){
-			User.update({_id:req.user._id},{city:req.body.city,state:req.body.state},function(err,user){
+			User.update({_id:req.user._id},{city:req.body.city,state:req.body.state,displayName:req.body.name},function(err,user){
 				if(err)
 				{
 					console.log(err);

@@ -6,13 +6,13 @@ app.controller('myCtrl',function($scope,User,$http){
 	$scope.city=User.city || "City";
 	$scope.state= User.state || "State";
 	$scope.name = User.displayName;
-	console.log(User);
 	$scope.ajax=function(){
 		var data={
+			name:$scope.name,
 			city:$scope.city,
 			state:$scope.state
 		};
-		$http.post('/updateUser',data).then(function(){
+		$http.post('/updateUser',data).then(function successCallback(){
 			$scope.update="Successfully updated";
 		});
 	};
@@ -20,7 +20,7 @@ app.controller('myCtrl',function($scope,User,$http){
 </script>
 <body ng-app="myApp" ng-controller="myCtrl">
 	<form>
-		<input class="form-control" name="displaName" placeholder="name" ng-model="name" ng-required="true"><br>
+		<input class="form-control" name="displayName" placeholder="name" ng-model="name" ng-required="true"><br>
 		<input class="form-control" name="city" placeholder="city" ng-model="city" ng-required="true"><br>
 		<input class="form-control" name="state" placeholder="state" ng-model="state" ng-required="true"><br>
 		<input type="submit" class="btn btn-primary" ng-click="ajax()">
