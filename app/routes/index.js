@@ -44,7 +44,7 @@ module.exports = function (app, passport) {
 			res.render('addbook',{login:true});
 		})
 		.post(isLoggedIn,function(req,res){
-			res.render('/mybooks',{login:true});
+			res.render('addbook',{login:true});
 		});
 	app.route('/api/:id')
 		.get(isLoggedIn, function (req, res) {
@@ -83,4 +83,9 @@ module.exports = function (app, passport) {
 		.get(isLoggedIn, clickHandler.getClicks)
 		.post(isLoggedIn, clickHandler.addClick)
 		.delete(isLoggedIn, clickHandler.resetClicks);
+
+	app.get('*', function(req, res){
+  		res.render('404',{login:req.isAuthenticated()});
+	});
+
 };

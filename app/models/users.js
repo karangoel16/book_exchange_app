@@ -7,8 +7,7 @@ var User = new Schema({
 	service:String,
 	displayName:String,
 	twitter:{
-		id:String,
-		
+		id:String,	
 		username:String
 	},
 	github: {
