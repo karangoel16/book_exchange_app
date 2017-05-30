@@ -9,6 +9,7 @@ var session = require('express-session');
 var engine = require('ejs-locals');
 var bodyparser = require('body-parser');
 var path= require('path');
+var mongoStore = require('connect-mongo')(session);
 
 var app = express();
 require('dotenv').load();
@@ -31,7 +32,11 @@ app.set('view engine', 'ejs');
 app.use(session({
 	secret: 'secretClementine',
 	resave: false,
-	saveUninitialized: true
+	saveUninitialized: true,
+	store: new mongoStore({
+		url:process.env.MONGO_URI,
+		autoRemove:'native'
+	})
 }));
 
 app.use(passport.initialize());
