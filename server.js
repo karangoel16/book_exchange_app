@@ -4,6 +4,7 @@ var express = require('express');
 var routes = require('./app/routes/index.js');
 var mongoose = require('mongoose');
 var passport = require('passport');
+var favicon = require('serve-favicon')
 var session = require('express-session');
 var engine = require('ejs-locals');
 var bodyparser = require('body-parser');
@@ -17,6 +18,7 @@ require('./app/config/passport')(passport);
 mongoose.connect(process.env.MONGO_URI);
 mongoose.Promise = global.Promise;
 
+app.use(favicon(path.join(__dirname, 'public/img/', 'download.png')));
 app.use('/controllers', express.static(process.cwd() + '/app/controllers'));
 app.use('/public', express.static(process.cwd() + '/public'));
 app.use('/common', express.static(process.cwd() + '/app/common'));

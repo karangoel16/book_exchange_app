@@ -4,7 +4,6 @@ var path = process.cwd();
 var User = require("../models/users");
 var Book = require("../models/books");
 var user_func = require("./user");
-var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
 
 module.exports = function (app, passport) {
 
@@ -16,7 +15,6 @@ module.exports = function (app, passport) {
 		}
 	}
 
-	var clickHandler = new ClickHandler();
 
 	app.route('/')
 		.get( function (req, res) {
@@ -27,7 +25,11 @@ module.exports = function (app, passport) {
 		});
 
 	app.route('/signup')
-		.get(function(req,res){
+		.get(isLoggedIn,function(req,res){
+			if(req.isAuthenticated())
+			{
+				res.redirect('/');
+			}
 			res.render('signup',{login:false});
 		});
 
@@ -140,15 +142,32 @@ module.exports = function (app, passport) {
 				res.json({success : "Updated Successfully", status : 200});
 			})
 		});
-	app.route('/api/:id/clicks')
-		.get(isLoggedIn, clickHandler.getClicks)
-		.post(isLoggedIn, clickHandler.addClick)
-		.delete(isLoggedIn, clickHandler.resetClicks);
+
 
 	app.get('/error',function(req,res){
 		res.render('error',{login:req.isAuthenticated()});
 	})
+	if (app.get('env') === 'development') {
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+        	login:req.isAuthenticated(),
+            message: err.message,
+            error: err
+        });
+    });
+}
 
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+    	login:req.isAuthenticated(),
+        message: err.message,
+        error: {}
+    });
+});
 	app.get('*', function(req, res){
   		res.render('404',{login:req.isAuthenticated()});
 	});
