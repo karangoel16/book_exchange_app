@@ -18,7 +18,7 @@ var User = new Schema({
    nbrClicks: {
       clicks: Number
    },
-   books:{type: mongoose.Schema.Types.ObjectId, ref: 'Books'},
+   books:[{type: mongoose.Schema.Types.ObjectId, ref: 'Books'}],
    city:String,
    state:String,
 });

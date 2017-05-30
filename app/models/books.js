@@ -10,5 +10,11 @@ var book=new Schema({
 	thumbnail:{
 		type:String,
 		required:true
+	},
+	ISBN:{
+		type:String,
+		required:true
 	}
 });
+
+module.exports = mongoose.model('Book', book);

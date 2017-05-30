@@ -2,6 +2,7 @@
 
 var path = process.cwd();
 var User = require("../models/users");
+var Book = require("../models/books");
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
 
 module.exports = function (app, passport) {
@@ -44,7 +45,35 @@ module.exports = function (app, passport) {
 			res.render('addbook',{login:true});
 		})
 		.post(isLoggedIn,function(req,res){
-			res.render('addbook',{login:true});
+			console.log(req.body);
+			var book=new Book({
+				name:req.body.book,
+				thumbnail:req.body.link,
+				ISBN:req.body.ISBN,
+			});
+			book.save(function(err)
+			{
+				if(err)
+				{
+					console.log(err);
+					res.redirect('/error');
+				}
+				res.redirect('/mybooks');
+			});
+		});
+	app.route('/searchISBN')
+		.post(isLoggedIn,function(req,res){
+			Book.findOne({ISBN:req.body.ISBN},function(err,book){
+				if(err)
+				{
+					console.log(err);
+				}
+				if(book!=null)
+				{
+					console.log("Book exists");
+				}
+				res.send(book)
+			});
 		});
 	app.route('/api/:id')
 		.get(isLoggedIn, function (req, res) {
@@ -83,6 +112,10 @@ module.exports = function (app, passport) {
 		.get(isLoggedIn, clickHandler.getClicks)
 		.post(isLoggedIn, clickHandler.addClick)
 		.delete(isLoggedIn, clickHandler.resetClicks);
+
+	app.get('/error',function(req,res){
+		res.render('error',{login:req.isAuthenticated()});
+	})
 
 	app.get('*', function(req, res){
   		res.render('404',{login:req.isAuthenticated()});
