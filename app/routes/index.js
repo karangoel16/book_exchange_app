@@ -35,7 +35,17 @@ module.exports = function (app, passport) {
 		.get(isLoggedIn, function (req, res) {
 			res.render('profile',{login:true,user:JSON.stringify(req.user)});
 		});
-
+	app.route('/mybooks')
+		.get(isLoggedIn,function(req,res){
+			res.render('mybooks',{login:true});
+		});
+	app.route('/addbook')
+		.get(isLoggedIn,function(req,res){
+			res.render('addbook',{login:true});
+		})
+		.post(isLoggedIn,function(req,res){
+			res.render('/mybooks',{login:true});
+		});
 	app.route('/api/:id')
 		.get(isLoggedIn, function (req, res) {
 			res.json(req.user.github);
