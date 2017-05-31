@@ -3,7 +3,7 @@
 var path = process.cwd();
 var User = require("../models/users");
 var Book = require("../models/books");
-
+var Request = require("../models/request");
 
 module.exports = function (app, passport) {
 
@@ -75,10 +75,18 @@ module.exports = function (app, passport) {
 
 	
 
-	app.route('/approval')
+	app.route('/unapproved')
 		.get(isLoggedIn,function(req,res){
-			Request.find({})
-			res.render('unapproved',{login:true})
+			console.log("Hello");
+			console.log(req.user._id)
+			Request.find({to:req.user._id}).populate('book').exec(function(err,book){
+				if(err){
+					console.log(err);
+					return ;
+				}
+				console.log(book);
+				res.render('unapproved',{login:true,books:book});
+			});
 		});
 	app.route('/decide')
 		.get(isLoggedIn,function(req,res){

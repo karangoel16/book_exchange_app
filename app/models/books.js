@@ -21,5 +21,10 @@ var book=new Schema({
 	},
 	user:{type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
-
+book.methods.updateRequest = function(){
+	this.status=true;
+}
+book.methods.deleteRequest = function(){
+	this.status=false;
+}
 module.exports = mongoose.model('Book', book);

@@ -13,15 +13,34 @@ module.exports = function (app, passport) {
 			res.redirect('/login');
 		}
 	}
-
+	app.route("/requestbook")
+		.get(isLoggedIn,function(req,res){
+			console.log("i am here");
+			Request.find({from:req.user._id}).populate('book').exec(function(err,request){
+				if(err){
+					console.log(err);
+					return ;
+				}
+				res.render('request',{login:true,request:request});
+			});
+		});
 	app.route("/deletebook")
 		.post(isLoggedIn,function(req,res){
 			req.user.deletebook(req.body.id);
+			Request.find({book:req.body.id}).remove().exec(function(err){
+					if(err)
+					{
+						console.log(err);
+						return ;
+					}
+					console.log("request deleted successfully");
+				});
 			Book.findOne({_id:req.body.id},function(err,book){
 				if(err){
 					console.log(err);
 					return;
 				}
+				book.remove();
 				res.json({success : "Updated Successfully", status : 200});
 				console.log("successfully delete");
 			});
@@ -53,7 +72,16 @@ module.exports = function (app, passport) {
 
 	app.route('/borrowbook')
 		.post(isLoggedIn,function(req,res){
-			Book.findOne({_id:req.body.id},function(err,book){
+			Book.findOne({_id:req.body.id,status:false},function(err,book){
+				book.updateRequest();//this is called to set status to true so that no other can request book
+				book.save(function(err)
+				{
+					if(err){
+					console.log(err);
+					return ;
+					}
+					console.log("status changed successfully");
+				});
 				var request=new Request();
 				request.from=book.user;
 				request.to = req.user._id;

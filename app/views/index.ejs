@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <% include layout %>
 <script>
 var app = angular.module("myApp",[]);
@@ -11,7 +12,7 @@ app.controller("myCtrl",function($scope,$http){
 				id:val
 			}}).then(function successCallback(){
 				$scope.update="Successfully updated";
-				console.log("Hello");
+				$('#span'+val).css("display","none");//to hide the refresh button after successfull call
 			});
 	}
 });
@@ -26,14 +27,14 @@ app.controller("myCtrl",function($scope,$http){
 		</div>
 		<div class="item" style="padding-left:20px;">
 			<h6>OTHER USER</h6>
-			<button onclick="location.href='/'" class=
+			<button onclick="location.href='/requestbook'" class=
 			"btn btn-primary" style="padding-left:10px;">VIEW</button>
 		</div>
 		<%}%>
 		<% books.forEach(function(book){%>
 			<div class="item w2">
-				<%if(!books.status){%>
-					<span class="glyphicon glyphicon-retweet" style="position:relative;float:right;cursor:pointer;padding-right:10px;" ng-click="ajax('<%=book._id%>')"></span>
+				<%if(!book.status){%>
+					<span class="glyphicon glyphicon-retweet" style="position:relative;float:right;cursor:pointer;padding-right:10px;" ng-click="ajax('<%=book._id%>')" id="span<%=book._id%>"></span>
 				<%}%>
 				<img src="<%=book.thumbnail%>" height='150px' width=100px>
 				<i><%=book.name%><i>

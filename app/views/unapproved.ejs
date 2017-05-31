@@ -1,3 +1,33 @@
+<!DOCTYPE html>
 <% include layout%>
-<body>
+<script>
+var app = angular.module("myApp",[]);
+app.controller("myCtrl",function($scope,$http){
+	
+});
+</script>
+<body ng-app="myApp" ng-controller="myCtrl">
+	<div>
+		<h5>Unapproved Request:</h5>
+		<div class="container">
+			<%books.forEach(function(book){%>
+				<%if(new String(book.status).valueOf() == new String("Unapproved").valueOf())%>
+					<div class="item w2" id="div<%=book._id%>">
+						<img src="<%=book.book.thumbnail%>" height='150px' width=100px>
+					<i><%=book.book.name%><i>
+				</div>
+			<%})%>
+		</div>
+		<h5>Approved Request<h5>
+		<div class="container">
+			<%books.forEach(function(book){%>
+			    <%console.log(book.status)%>
+				<%if(new String(book.status).valueOf() == new String("Approved").valueOf())%>
+					<div class="item w2" id="div<%=book._id%>">
+						<img src="<%=book.book.thumbnail%>" height='150px' width=100px>
+					<i><%=book.book.name%><i>
+				</div>
+			<%})%>
+		</div>
+	</div>
 </body>

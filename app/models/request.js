@@ -9,7 +9,10 @@ var requireSchema= new Schema({
 	from:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
 	to:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
 	book:{type:mongoose.Schema.Types.ObjectId,ref:'Book'},
-	status:Boolean
+	status:{
+		type:String,
+		default:"Unapproved"
+	}
 });
 
 module.exports = mongoose.model('Require',requireSchema);
