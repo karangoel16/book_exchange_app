@@ -3,7 +3,7 @@
 var path = process.cwd();
 var User = require("../models/users");
 var Book = require("../models/books");
-var user_func = require("./user");
+
 
 module.exports = function (app, passport) {
 
@@ -18,7 +18,7 @@ module.exports = function (app, passport) {
 
 	app.route('/')
 		.get( function (req, res) {
-			Book.find().limit(10).exec(function(err,books)
+			Book.find({user:{'$ne':req.user._id}}).limit(10).exec(function(err,books)
 			{
 				res.render('index',{login:req.isAuthenticated(),books:books});
 			});	
@@ -31,6 +31,18 @@ module.exports = function (app, passport) {
 				res.redirect('/');
 			}
 			res.render('signup',{login:false});
+		})
+		.post(function(req,res){
+			var user=new User();
+			user.local.username=req.body.username;
+			user.setpassword(req.body.password);
+			user.save(function(err){
+				if(err){
+					console.log(err);
+					return err;
+				}
+				console.log("save local success");
+			})
 		});
 
 	app.route('/login')
@@ -85,6 +97,10 @@ module.exports = function (app, passport) {
 			});
 		});
 
+	app.route('/approval')
+		.get(isLoggedIn,function(req,res){
+			res.render('unapproved',{login:true})
+		});
 	app.route('/decide')
 		.get(isLoggedIn,function(req,res){
 			res.render("booklend",{login:true});
@@ -109,10 +125,7 @@ module.exports = function (app, passport) {
 				res.send(book)
 			});
 		});
-	app.route('/api/:id')
-		.get(isLoggedIn, function (req, res) {
-			res.json(req.user.github);
-		});
+
 
 	app.route('/auth/github')
 		.get(passport.authenticate('github'));

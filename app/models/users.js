@@ -17,6 +17,10 @@ var User = new Schema({
 		username: String,
       		publicRepos: Number
 	},
+	local:{
+		id:String,
+		username:String
+	},
    nbrClicks: {
       clicks: Number
    },
@@ -34,6 +38,15 @@ User.methods.addbook = function(book){
 			return;
 		}
 		console.log("successfully added");
+	});
+}
+User.methods.deletebook = function(book){
+	this.update({$pull:{books:book}},function(err){
+		if(err){
+			console.log(err);
+			return ;
+		}
+		console.log("successfully deleted");
 	});
 }
 User.methods.setPassword = function(password){

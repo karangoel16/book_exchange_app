@@ -8,7 +8,8 @@ var Schema = mongoose.Schema;
 var requireSchema= new Schema({
 	from:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
 	to:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-	book:{type:mongoose.Schema.Types.ObjectId,ref:'Book'}
+	book:{type:mongoose.Schema.Types.ObjectId,ref:'Book'},
+	status:Boolean
 });
 
 module.exports = mongoose.model('Require',requireSchema);

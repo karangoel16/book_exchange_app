@@ -13,12 +13,25 @@ app.controller("myCtrl",function($scope,$http){
 </script>
 <body>
 	<div class="container" ng-app="myApp" ng-controller="myCtrl">
+		<%if(login){%>
+		<div class="item" style="padding-left:20px;">
+			<h6>YOUR REQUEST</h6>
+			<button onclick="location.href='/unapproved'" class=
+			"btn btn-primary" style="padding-left:10px;">VIEW</button>
+		</div>
+		<div class="item" style="padding-left:20px;">
+			<h6>OTHER USER</h6>
+			<button onclick="location.href='/'" class=
+			"btn btn-primary" style="padding-left:10px;">VIEW</button>
+		</div>
+		<%}%>
 		<% books.forEach(function(book){%>
 			<div class="item w2">
 				<%if(!books.status){%>
 					<span class="glyphicon glyphicon-retweet" style="position:relative;float:right;cursor:pointer;padding-right:10px;" ng-click="ajax('<%=book._id%>')"></span>
 				<%}%>
 				<img src="<%=book.thumbnail%>" height='150px' width=100px>
+				<i><%=book.name%><i>
 			</div>
 		<%})%>
 	</div>

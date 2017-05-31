@@ -1,13 +1,34 @@
 <% include layout%>
-<body>
+<script>
+var app= angular.module("myApp",[]);
+app.controller("myCtrl",function($scope,$http){
+	$scope.check="working";
+	$scope.del=function(data)
+	{
+		console.log(data);
+		$http({
+		method:"post",
+		url:'/deletebook',
+		data:{
+			id:data
+		}}).then(function successCallback(){
+			$('#div'+data).css("display","none");
+		});
+	};
+});
+</script>
+<body ng-app="myApp" ng-controller="myCtrl">
 	<div class="container">
+
 		<div class="item" style="padding-left:20px;padding-top:30px;">
 			<button onclick="location.href='/addbook'" class=
 			"btn btn-primary" style="padding-left:10px;">ADD BOOK</button>
 		</div>
 		<% books.forEach(function(book){%>
-			<div class="item w2">
+			<div class="item w2" id="div<%=book._id%>">
+				<span class="glyphicon glyphicon-trash" style="position:relative;float:right;pointer-events: auto;cursor:pointer;" ng-click="del('<%=book._id%>')"></span>
 				<img src="<%=book.thumbnail%>" height='150px' width=100px>
+				<i><%=book.name%><i>
 			</div>
 		<%})%>
 	</div>

@@ -15,7 +15,7 @@ var book=new Schema({
 		type:String,
 		required:true
 	},
-	status:{
+	status:{//if this is true means the book has already been given
 		type:Boolean,
 		default:false
 	},
