@@ -70,6 +70,19 @@ module.exports = function (app, passport) {
 			});
 		});
 
+	app.route('/returnBook')
+		.get(isLoggedIn,function(req,res){
+			Request.find({'from':req.user._id,status:"Approve"}).populate('book').exec(function(err,Request){
+					if(err)
+					{
+						console.log(err);
+						return ;
+					}
+					console.log(Request);
+					res.render('retBook',{login:true,request:Request});
+				});
+			});
+
 	app.route('/borrowbook')
 		.post(isLoggedIn,function(req,res){
 			Book.findOne({_id:req.body.id,status:false},function(err,book){

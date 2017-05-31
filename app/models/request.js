@@ -15,4 +15,8 @@ var requireSchema= new Schema({
 	}
 });
 
+requireSchema.methods.approve=function(){
+	this.status="Approve";
+}
+
 module.exports = mongoose.model('Require',requireSchema);

@@ -5,11 +5,27 @@ var app=angular.module("myApp",[]);
 app.controller("myCtrl",function($scope,$http){
 	$scope.request=function(data)
 	{
-		console.log(data);
+		$http({
+			url:'/approveRequest',
+			data:{
+				id:data
+			},
+			method:"post"
+		}).then(function successCallback(){
+			console.log("successfully updated");
+		});
 	}
 	$scope.del = function(data)
 	{
-		console.log(data);
+		$http({
+			url:'/deleteRequest',
+			data:{
+				id:data
+			},
+			method:"post"
+		}).then(function successCallback(){
+			console.log("successfully updated");
+		});
 	}
 });
 </script>
@@ -18,8 +34,8 @@ app.controller("myCtrl",function($scope,$http){
 	<div class="container">
 		<%request.forEach(function(req){%>
 			<div class="item w2">
-					<span class="glyphicon glyphicon-ok" ng-click="request(<%=req._id%>)" style="position:relative;float:right;pointer-events: auto;cursor:pointer;color:green;"></span>
-					<span class="glyphicon glyphicon-remove" ng-click="del(<%=req._id%>)" style="position:relative;float:right;pointer-events: auto;cursor:pointer;color:red;"></span>
+					<span class="glyphicon glyphicon-ok" ng-click="request('<%=req._id%>')" style="position:relative;float:right;pointer-events: auto;cursor:pointer;color:green;"></span>
+					<span class="glyphicon glyphicon-remove" ng-click="del('<%=req._id%>')" style="position:relative;float:right;pointer-events: auto;cursor:pointer;color:red;"></span>
 					<img src="<%=req.book.thumbnail%>" height='150px' width=100px>
 					<i><%=req.book.name%><i>
 			</div>

@@ -25,6 +25,10 @@ app.controller("myCtrl",function($scope,$http){
 			<button onclick="location.href='/addbook'" class=
 			"btn btn-primary" style="padding-left:10px;">ADD BOOK</button>
 		</div>
+		<div class="item" style="padding-left:20px;padding-top:30px;">
+			<button onclick="location.href='/returnBook'" class=
+			"btn btn-primary" style="padding-left:10px;">RET BOOK</button>
+		</div>
 		<% books.forEach(function(book){%>
 			<div class="item w2" id="div<%=book._id%>">
 				<span class="glyphicon glyphicon-trash" style="position:relative;float:right;pointer-events: auto;cursor:pointer;" ng-click="del('<%=book._id%>')"></span>

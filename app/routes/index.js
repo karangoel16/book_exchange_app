@@ -88,10 +88,6 @@ module.exports = function (app, passport) {
 				res.render('unapproved',{login:true,books:book});
 			});
 		});
-	app.route('/decide')
-		.get(isLoggedIn,function(req,res){
-			res.render("booklend",{login:true});
-		});
 
 	app.route('/searchISBN')
 		.post(isLoggedIn,function(req,res){
@@ -107,5 +103,4 @@ module.exports = function (app, passport) {
 				res.send(book)
 			});
 		});
-
 };
