@@ -1,6 +1,28 @@
 <!DOCTYPE html>
 <% include layout %>
-<body>
+<script>
+var app=angular.module("myApp",[]);
+app.controller("myCtrl",function($scope,$http){
+	$scope.request=function(data)
+	{
+		console.log(data);
+	}
+	$scope.del = function(data)
+	{
+		console.log(data);
+	}
+});
+</script>
+<body ng-app="myApp" ng-controller="myCtrl">
+<h3>Waiting For Approval:</h3><br>
 	<div class="container">
+		<%request.forEach(function(req){%>
+			<div class="item w2">
+					<span class="glyphicon glyphicon-ok" ng-click="request(<%=req._id%>)" style="position:relative;float:right;pointer-events: auto;cursor:pointer;color:green;"></span>
+					<span class="glyphicon glyphicon-remove" ng-click="del(<%=req._id%>)" style="position:relative;float:right;pointer-events: auto;cursor:pointer;color:red;"></span>
+					<img src="<%=req.book.thumbnail%>" height='150px' width=100px>
+					<i><%=req.book.name%><i>
+			</div>
+		<%})%>
 	</div>
 </body>
