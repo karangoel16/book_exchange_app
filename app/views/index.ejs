@@ -4,10 +4,15 @@ var app = angular.module("myApp",[]);
 app.controller("myCtrl",function($scope,$http){
 	$scope.ajax=function(val)
 	{
-		$http.post('/borrowbook').then(function successCallback(){
-			$scope.update="Successfully updated";
-			console.log("Hello");
-		});
+		$http({
+			method:"post",
+			url:"/borrowbook",
+			data:{
+				id:val
+			}}).then(function successCallback(){
+				$scope.update="Successfully updated";
+				console.log("Hello");
+			});
 	}
 });
 </script>

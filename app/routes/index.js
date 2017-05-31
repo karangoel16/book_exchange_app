@@ -73,42 +73,16 @@ module.exports = function (app, passport) {
 				});
 		});
 
-	app.route('/addbook')
-		.get(isLoggedIn,function(req,res){
-			res.render('addbook',{login:true});
-		})
-		.post(isLoggedIn,function(req,res){
-			console.log(req.body);
-			var book=new Book({
-				name:req.body.book,
-				thumbnail:req.body.Link,
-				ISBN:req.body.ISBN,
-				user:req.user._id
-			});
-			book.save(function(err)
-			{
-				if(err)
-				{
-					console.log(err);
-					res.redirect('/error');
-				}
-				req.user.addbook(book._id);
-				res.redirect('/mybooks');
-			});
-		});
+	
 
 	app.route('/approval')
 		.get(isLoggedIn,function(req,res){
+			Request.find({})
 			res.render('unapproved',{login:true})
 		});
 	app.route('/decide')
 		.get(isLoggedIn,function(req,res){
 			res.render("booklend",{login:true});
-		});
-
-	app.route('/borrowbook')
-		.post(isLoggedIn,function(req,res){
-			res.send("hello");
 		});
 
 	app.route('/searchISBN')
@@ -125,64 +99,5 @@ module.exports = function (app, passport) {
 				res.send(book)
 			});
 		});
-
-
-	app.route('/auth/github')
-		.get(passport.authenticate('github'));
-
-	app.route('/auth/github/callback')
-		.get(passport.authenticate('github', {
-			successRedirect: '/',
-			failureRedirect: '/login'
-		}));
-
-	app.route('/auth/twitter')
-		.get(passport.authenticate('twitter'));
-
-	app.route('/auth/twitter/callback')
-		.get(passport.authenticate('twitter',{
-			successRedirect:'/',
-			failureRedirect:'/login'
-		}));
-	app.route('/updateUser')
-		.post(isLoggedIn,function(req,res){
-			User.update({_id:req.user._id},{city:req.body.city,state:req.body.state,displayName:req.body.name},function(err,user){
-				if(err)
-				{
-					console.log(err);
-					return ;
-				}
-				res.json({success : "Updated Successfully", status : 200});
-			})
-		});
-
-
-	app.get('/error',function(req,res){
-		res.render('error',{login:req.isAuthenticated()});
-	})
-	if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-        	login:req.isAuthenticated(),
-            message: err.message,
-            error: err
-        });
-    });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-    	login:req.isAuthenticated(),
-        message: err.message,
-        error: {}
-    });
-});
-	app.get('*', function(req, res){
-  		res.render('404',{login:req.isAuthenticated()});
-	});
 
 };

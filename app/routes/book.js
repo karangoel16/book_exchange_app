@@ -3,7 +3,7 @@
 var path = process.cwd();
 var User = require("../models/users");
 var Book = require("../models/books");
-
+var Request = require("../models/request");
 module.exports = function (app, passport) {
 
 	function isLoggedIn (req, res, next) {
@@ -48,6 +48,24 @@ module.exports = function (app, passport) {
 				}
 				req.user.addbook(book._id);
 				res.redirect('/mybooks');
+			});
+		});
+
+	app.route('/borrowbook')
+		.post(isLoggedIn,function(req,res){
+			Book.findOne({_id:req.body.id},function(err,book){
+				var request=new Request();
+				request.from=book.user;
+				request.to = req.user._id;
+				request.book=book._id;
+				request.save(function(err){
+					if(err)
+					{
+						console.log(err);
+					}
+					res.json({success : "Updated Successfully", status : 200});
+					console.log("Request successfully added");
+				})
 			});
 		});
 };
