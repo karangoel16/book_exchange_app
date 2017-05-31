@@ -6,7 +6,6 @@ app.controller("myCtrl",function($scope,$http){
 	$scope.check="working";
 	$scope.del=function(data)
 	{
-		console.log(data);
 		$http({
 		method:"post",
 		url:'/deletebook',

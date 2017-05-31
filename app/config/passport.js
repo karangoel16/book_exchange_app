@@ -8,7 +8,7 @@ var configAuth = require('./auth');
 
 module.exports = function (passport) {
 	passport.serializeUser(function (user, done) {
-		done(null, user.id);
+		done(null, user._id);
 	});
 
 	passport.deserializeUser(function (id, done) {
@@ -79,14 +79,18 @@ module.exports = function (passport) {
 			});
 		});
 	}));
-	passport.use(new LocalStrategy(function(username,password,done)
+	passport.use(new LocalStrategy({
+		usernameField:'local.username'
+	},function(username,password,done)
     {
+    	console.log("here");
         User.findOne({'local.username':username},function(err,user)
         {
             if(err)
             {
                 return done(err);
             }
+            console.log(user);
             if(!user)
             {
                 return done(null,false,{message:'Incorrect username'});

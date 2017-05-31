@@ -51,7 +51,6 @@ module.exports = function (app, passport) {
 					console.log(err);
 					return ;
 				}
-				console.log("reached here");
 				Book.findOne({_id:request.book},function(err,book){
 					if(err){
 						console.log(err);

@@ -25,7 +25,7 @@ module.exports = function (app, passport) {
 		});
 
 	app.route('/signup')
-		.get(isLoggedIn,function(req,res){
+		.get(function(req,res){
 			if(req.isAuthenticated())
 			{
 				res.redirect('/');
@@ -34,8 +34,10 @@ module.exports = function (app, passport) {
 		})
 		.post(function(req,res){
 			var user=new User();
+			user.service="local";
 			user.local.username=req.body.username;
-			user.setpassword(req.body.password);
+			user.setPassword(req.body.password);
+			console.log("reached here");
 			user.save(function(err){
 				if(err){
 					console.log(err);
@@ -48,6 +50,12 @@ module.exports = function (app, passport) {
 	app.route('/login')
 		.get(function (req, res) {
 			res.render('login',{login:false});
+		})
+		.post(function(req,res){
+			  passport.authenticate('local', {
+    			successRedirect: '/',
+    			failureRedirect: '/login'
+  			});
 		});
 
 	app.route('/logout')
@@ -68,7 +76,6 @@ module.exports = function (app, passport) {
 						console.log(err);
 						return ;
 					}
-					console.log(user);
 					res.render('mybooks',{login:true,books:user.books});
 				});
 		});
@@ -77,30 +84,13 @@ module.exports = function (app, passport) {
 
 	app.route('/unapproved')
 		.get(isLoggedIn,function(req,res){
-			console.log("Hello");
-			console.log(req.user._id)
 			Request.find({to:req.user._id}).populate('book').exec(function(err,book){
 				if(err){
 					console.log(err);
 					return ;
 				}
-				console.log(book);
 				res.render('unapproved',{login:true,books:book});
 			});
 		});
 
-	app.route('/searchISBN')
-		.post(isLoggedIn,function(req,res){
-			Book.findOne({ISBN:req.body.ISBN},function(err,book){
-				if(err)
-				{
-					console.log(err);
-				}
-				if(book!=null)
-				{
-					console.log("Book exists");
-				}
-				res.send(book)
-			});
-		});
 };

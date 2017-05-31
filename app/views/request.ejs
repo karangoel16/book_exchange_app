@@ -13,6 +13,7 @@ app.controller("myCtrl",function($scope,$http){
 			method:"post"
 		}).then(function successCallback(){
 			console.log("successfully updated");
+			$('#div'+data).css("display","none");
 		});
 	}
 	$scope.del = function(data)
@@ -25,6 +26,7 @@ app.controller("myCtrl",function($scope,$http){
 			method:"post"
 		}).then(function successCallback(){
 			console.log("successfully updated");
+			$('#div'+data).css("display","none");
 		});
 	}
 });
@@ -33,7 +35,7 @@ app.controller("myCtrl",function($scope,$http){
 <h3>Waiting For Approval:</h3><br>
 	<div class="container">
 		<%request.forEach(function(req){%>
-			<div class="item w2">
+			<div class="item w2" id="div<%=req._id%>">
 					<span class="glyphicon glyphicon-ok" ng-click="request('<%=req._id%>')" style="position:relative;float:right;pointer-events: auto;cursor:pointer;color:green;"></span>
 					<span class="glyphicon glyphicon-remove" ng-click="del('<%=req._id%>')" style="position:relative;float:right;pointer-events: auto;cursor:pointer;color:red;"></span>
 					<img src="<%=req.book.thumbnail%>" height='150px' width=100px>

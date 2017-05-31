@@ -13,14 +13,17 @@ app.controller("myCtrl",function($scope,$http){
 			method:"post"
 		}).then(function successCallback(){
 			console.log("successfully updated");
+			console.log('div'+data);
+			$('#div'+data).css("display","none");
 		});
 	}
 });
 </script>
 <body ng-app="myApp" ng-controller="myCtrl">
+	<h1>Books to be Returned</h1>
 	<div class="container">
 		<%request.forEach(function(req){%>
-			<div class="item w2">
+			<div class="item w2" id="div<%=req._id%>">
 					<span class="glyphicon glyphicon-off" ng-click="del('<%=req._id%>')" style="position:relative;float:right;pointer-events: auto;cursor:pointer;color:red;"></span>
 					<img src="<%=req.book.thumbnail%>" height='150px' width=100px>
 					<i><%=req.book.name%><i>

@@ -7,24 +7,6 @@ $(document).ready(function(){
 		var d = new Date();
 		$('#image_val').attr("src",$('#image').val());
 	});
-	$('#ISBN').change(function(){
-		var val=$('#ISBN').val();
-		$.ajax({
-			url:'/searchISBN',
-			method:"POST",
-			data:{ISBN:val},
-			success:function(data)
-			{
-				if(data)
-				{
-					alert("Book exists in database and have been added to your account");
-				}
-			},
-			error:function(err){
-				console.log(err);
-			}
-		});
-	});
 });
 </script>
 <body>

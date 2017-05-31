@@ -15,7 +15,6 @@ module.exports = function (app, passport) {
 	}
 	app.route("/requestbook")
 		.get(isLoggedIn,function(req,res){
-			console.log("i am here");
 			Request.find({from:req.user._id}).populate('book').exec(function(err,request){
 				if(err){
 					console.log(err);
@@ -72,7 +71,7 @@ module.exports = function (app, passport) {
 
 	app.route('/returnBook')
 		.get(isLoggedIn,function(req,res){
-			Request.find({'from':req.user._id,status:"Approve"}).populate('book').exec(function(err,Request){
+			Request.find({'to':req.user._id,status:"Approve"}).populate('book').exec(function(err,Request){
 					if(err)
 					{
 						console.log(err);
