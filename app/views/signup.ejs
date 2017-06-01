@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <%include layout%>
+<script type="text/javascript">
+function check_pass() {
+    if (document.getElementById('password').value ==
+            document.getElementById('confirm_password').value) {
+    	document.getElementById('message').innerHTML="";
+        document.getElementById('submit').disabled = false;
+    } else {
+    	document.getElementById('message').innerHTML="Password is not same";
+        document.getElementById('submit').disabled = true;
+    }
+}
+</script>
 <body>
 <div class="jumbotron">
 	<form action="/signup" method="post">
+		<div id="message"></div>
 		<input type="text" name="username" placeholder="UserName" class="form-control"name="username" required>
 		<br>
-		<input type="password" class="form-control" placeholder="password" name="password" required>
-		<br>
-		<input class="form-control" type="password" placeholder="password" required>
-		<br>
-		<input type="submit">
+		<input type="password" name="password" id="password" onchange='check_pass();' class="form-control" placeholder="password" /><br>
+		<input type="password" name="confirm_password" id="confirm_password" onchange='check_pass();' class="form-control" placeholder="confirm password" /><br>
+		<input type="submit" name="submit"  value="registration"  id="submit" disabled/>
 	</form>
 </div>
 </body>
