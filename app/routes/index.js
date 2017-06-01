@@ -44,6 +44,7 @@ module.exports = function (app, passport) {
 					return err;
 				}
 				console.log("save local success");
+				res.redirect("/");
 			})
 		});
 

@@ -22,6 +22,7 @@ var User = new Schema({
 		username:{
 			type:String,
 			unique:true,
+			sparse:true
 		}
 	},
    nbrClicks: {
