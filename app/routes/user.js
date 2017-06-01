@@ -42,7 +42,11 @@ module.exports = function (app, passport) {
 				res.json({success : "Updated Successfully", status : 200});
 			});
 		});
-
+	app.route('/changePassword')
+		.post(isLoggedIn,function(req,res){
+			req.user.setPassword(req.body.password);
+			res.json({success : "Updated Successfully", status : 200});
+		});
 	app.route('/deleteRequest')
 		.post(isLoggedIn,function(req,res){
 			Request.findOne({_id:req.body.id},function(err,request){

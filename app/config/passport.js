@@ -80,25 +80,23 @@ module.exports = function (passport) {
 		});
 	}));
 	passport.use(new LocalStrategy({
-		usernameField:'local.username'
+		 usernameField: 'username',
+    	 passwordField: 'password'
 	},function(username,password,done)
     {
-    	console.log("here");
+    	process.nextTick(function () {
         User.findOne({'local.username':username},function(err,user)
         {
             if(err)
             {
                 return done(err);
             }
-            console.log(user);
             if(!user)
             {
                 return done(null,false,{message:'Incorrect username'});
             }
-            var check=user.validatePassword(password);
-            if(check===true)
+            if(user.validatePassword(password))
             {
-                //console.log(req.isAuthenticated);
                 return done(null,user);
             }
             else
@@ -106,5 +104,6 @@ module.exports = function (passport) {
                return done(null,false,{message:'Incorrect Password'});
             }
         });
+    });
     }));
 };

@@ -16,6 +16,15 @@ app.controller('myCtrl',function($scope,User,$http){
 		$http.post('/updateUser',data).then(function successCallback(){
 			$scope.update="Successfully updated";
 		});
+	$scope.changePassword = function(){
+		console.log("hello");
+		var data={
+			password:$scope.password
+		}
+		$http.post('/changePassword',data).then(function successCallback(){
+			$scope.update="Password changed";
+		});
+	}
 	};
 });
 function imgError(image) {
@@ -28,13 +37,22 @@ function imgError(image) {
 }
 </script>
 <body ng-app="myApp" ng-controller="myCtrl">
+	<div>
 	<form>
 		<input class="form-control" name="displayName" placeholder="name" ng-model="name" ng-required="true"><br>
 		<input class="form-control" name="city" placeholder="city" ng-model="city" ng-required="true"><br>
 		<input class="form-control" name="state" placeholder="state" ng-model="state" ng-required="true"><br>
 		<input type="submit" class="btn btn-primary" ng-click="ajax()">
 	</form>
+	</div>
 	<div class="jumbotron">
 	<p>{{update}}</p>
+	</div>
+	<div class="jumbotron">
+		<form>
+			<input type="password" name="password" ng-model="change_password" placeholder="password" class="form-control" ng-required="true">
+			<input type="password" name="Confirm_password" ng-model="Cpassword" placeholder="Confirm Password" class="form-control" ng-required="true">
+			<input class="btn btn-primary" type="submit" ng-click="changePassword()">
+		</form>
 	</div>
 </body>

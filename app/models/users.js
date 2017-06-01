@@ -19,7 +19,10 @@ var User = new Schema({
 	},
 	local:{
 		id:String,
-		username:String
+		username:{
+			type:String,
+			unique:true,
+		}
 	},
    nbrClicks: {
       clicks: Number
@@ -61,7 +64,6 @@ User.methods.setPassword = function(password){
 }
 
 User.methods.validatePassword = function(password){
-	console.log("hello");
     var hash=crypto.pbkdf2Sync(password, this.salt, 1000, 64,'SHA1').toString('hex');
     return this.hash === hash;
 };

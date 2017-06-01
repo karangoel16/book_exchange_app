@@ -51,12 +51,10 @@ module.exports = function (app, passport) {
 		.get(function (req, res) {
 			res.render('login',{login:false});
 		})
-		.post(function(req,res){
-			  passport.authenticate('local', {
-    			successRedirect: '/',
-    			failureRedirect: '/login'
-  			});
-		});
+		.post(
+			passport.authenticate('local'),function(req,res){
+					res.redirect('/');
+			});
 
 	app.route('/logout')
 		.get(function (req, res) {
