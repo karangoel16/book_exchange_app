@@ -18,7 +18,7 @@ module.exports = function (app, passport) {
 
 	app.route('/')
 		.get( function (req, res) {
-			Book.find({user:{'$ne':req.user._id}}).limit(10).exec(function(err,books)
+			Book.find({user:{'$ne':req.user._id}}).limit(100).exec(function(err,books)
 			{
 				res.render('index',{login:req.isAuthenticated(),books:books});
 			});	
