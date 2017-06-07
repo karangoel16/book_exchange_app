@@ -37,6 +37,7 @@ app.use(session({
 	resave: false,
 	saveUninitialized: true,
 	store: new mongoStore({
+        mongooseConnection: mongoose.connection,
 		url:process.env.MONGO_URI,
 		autoRemove:'native'
 	})

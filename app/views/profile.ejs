@@ -7,6 +7,7 @@ app.controller('myCtrl',function($scope,User,$http){
 	$scope.city=User.city || "City";
 	$scope.state= User.state || "State";
 	$scope.name = User.displayName;
+
 	$scope.ajax=function(){
 		var data={
 			name:$scope.name,
@@ -16,17 +17,31 @@ app.controller('myCtrl',function($scope,User,$http){
 		$http.post('/updateUser',data).then(function successCallback(){
 			$scope.update="Successfully updated";
 		});
+	}
+
 	$scope.changePassword = function(){
 		console.log("hello");
 		var data={
 			password:$scope.password
 		}
+		console.log(data);
 		$http.post('/changePassword',data).then(function successCallback(){
+			console.log("hello");
 			$scope.update="Password changed";
 		});
 	}
-	};
 });
+function check_pass() {
+    if (document.getElementById('password').value ==
+            document.getElementById('confirm_password').value) {
+    	document.getElementById('message').innerHTML="";
+        document.getElementById('submit').disabled = false;
+    } else {
+    	document.getElementById('message').innerHTML="Password is not same";
+        document.getElementById('submit').disabled = true;
+    }
+}
+
 function imgError(image) {
 	var test="/public/img/images.jpg";
     image.onerror = "";
@@ -38,21 +53,18 @@ function imgError(image) {
 </script>
 <body ng-app="myApp" ng-controller="myCtrl">
 	<div>
-	<form>
 		<input class="form-control" name="displayName" placeholder="name" ng-model="name" ng-required="true"><br>
 		<input class="form-control" name="city" placeholder="city" ng-model="city" ng-required="true"><br>
 		<input class="form-control" name="state" placeholder="state" ng-model="state" ng-required="true"><br>
 		<input type="submit" class="btn btn-primary" ng-click="ajax()">
-	</form>
 	</div>
 	<div class="jumbotron">
 	<p>{{update}}</p>
 	</div>
 	<div class="jumbotron">
-		<form>
-			<input type="password" name="password" ng-model="change_password" placeholder="password" class="form-control" ng-required="true">
-			<input type="password" name="Confirm_password" ng-model="Cpassword" placeholder="Confirm Password" class="form-control" ng-required="true">
-			<input class="btn btn-primary" type="submit" ng-click="changePassword()">
-		</form>
+			<div id="message"></div>
+			<input type="password" name="password" id="password" ng-model="password" placeholder="password" class="form-control" ng-required="true" onchange="check_pass()">
+			<input type="password" name="confirm_password" id="confirm_password" ng-model="Cpassword" placeholder="Confirm Password" class="form-control" ng-required="true" onchange="check_pass()">
+			<input type="submit" id="submit" class="btn btn-primary" ng-click="changePassword()">
 	</div>
 </body>
